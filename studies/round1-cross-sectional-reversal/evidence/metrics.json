@@ -1,0 +1,49 @@
+{
+  "study": "round1-cross-sectional-reversal",
+  "status": "REJECT",
+  "evidence_stage": "development_backtest",
+  "forward_confirmed": false,
+  "headline": {
+    "gross_sharpe": 7.04,
+    "gross_positive_oos_windows": 0.83,
+    "net_sharpe": -59.475515726475734,
+    "net_positive_oos_windows": 0.0,
+    "oos_windows": 76,
+    "cost_to_gross_alpha": 9.609748982319239
+  },
+  "sensitivity": {
+    "pessimistic_15_bps": {
+      "every_bar": -59.2,
+      "every_16_bars": -13.5,
+      "every_96_bars": -2.8
+    },
+    "daily": {
+      "maker_approx_3_bps": -0.12,
+      "taker_approx_7_5_bps": -1.82
+    }
+  },
+  "locked_displays": [
+    "7.04",
+    "83%",
+    "-59.48",
+    "76",
+    "9.61×",
+    "-59.2",
+    "-13.5",
+    "-2.8",
+    "-0.12",
+    "-1.82"
+  ],
+  "limitations": [
+    "The reported gross Sharpe was measured before a backward-fill leakage fix, while the net cost sweep was measured after it; the report says the effect is minor, but the figures are not a perfectly identical pipeline comparison.",
+    "Transaction costs were modelled rather than paid, and maker execution would add queue and fill risk.",
+    "These are backtest results, not live trading returns."
+  ],
+  "banned_claims": [
+    "profitable strategy",
+    "guaranteed edge",
+    "live trading result",
+    "production-ready strategy"
+  ],
+  "source_snapshot_sha256": "dcd383ce6ca6b78b32e386580f70105c4b63a605941847633b45bbef2e868d07"
+}

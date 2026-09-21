@@ -1,0 +1,13 @@
+{
+  "study": "round1-cross-sectional-reversal",
+  "reproducibility_level": "logic_and_deterministic_tests",
+  "full_historical_reproduction": false,
+  "sha256": {
+    "article.md": "77b460c63d5ebeabc55c59aef32fa8a723de93c332ac082d8d354c2777962a1b",
+    "review.json": "f439f0f6d4294213623e243e7a9c733ef3f9297fa418f31b505a3ed8bf3f1665",
+    "evidence/metrics.json": "95be0ab929dca3aaf7722c671448a054dd3bdb5b1e8c1523ab84560a71188ba2",
+    "figures/gross-sharpe.png": "e27f3c47e1433b25dc4988540f742e0ba72171f62cb812715d41f2d28dfdab52",
+    "figures/cost-wall.png": "a9954cfa716d965b5d041d663204f993c5e91aa692a08d95c7ac6dbd610f905d",
+    "figures/workspace-cost-model.jpg": "b3ef107d57d6d630ce8fde72b33399f46462430b2a7a9681417766afe3ca8e85"
+  }
+}

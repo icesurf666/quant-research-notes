@@ -1,0 +1,14 @@
+{
+  "version": "editorial_review_v1",
+  "article_sha256": "77b460c63d5ebeabc55c59aef32fa8a723de93c332ac082d8d354c2777962a1b",
+  "evidence_snapshot_sha256": "dcd383ce6ca6b78b32e386580f70105c4b63a605941847633b45bbef2e868d07",
+  "passed": true,
+  "passes": {
+    "evidence_and_numbers": true,
+    "implementation": true,
+    "editorial": true,
+    "independent_source_verifier": true
+  },
+  "unsupported_claims": [],
+  "contradictions": []
+}
