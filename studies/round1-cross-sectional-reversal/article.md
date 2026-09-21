@@ -1,43 +1,39 @@
-# My Crypto Strategy Had a Sharpe of 7. And Still Lost Money
+# My Crypto Backtest Had a Sharpe of 13.4. Then I Added Trading Costs
 
-I was not trying to prove a grand theory about crypto. I was working through simple, falsifiable baselines and looking for something worth a second experiment.
+I was not trying to prove a grand theory about crypto. I was testing simple, falsifiable baselines and looking for one result worth a second experiment.
 
-The third baseline looked almost too clean: gross Sharpe `7.04`, with positive returns in `83%` of the reported out-of-sample windows. Then I charged the strategy for the trading it required. Net Sharpe fell to `-59.48`, and none of the 76 windows remained positive.
+Cross-sectional reversal looked almost too clean: gross Sharpe `13.44`, with positive returns in `67 / 76` reported out-of-sample windows. Then I charged the same signal for the trading it required. At `10 bps` per side, net Sharpe fell to `-40.13`, and not one of those 76 windows remained positive.
 
-That is not a typo. It is what can happen when a small short-lived pattern requires a new portfolio every 15 minutes.
+That is not a typo. It is what can happen when a short-lived pattern asks for a new portfolio every 15 minutes.
 
 ![The HFM cost and funding implementation open during the experiment](figures/workspace-cost-model.jpg)
 
 *The less glamorous part of the experiment: execution delay, turnover, fees, slippage, and funding inside the same evaluation path.*
 
-There is one important caveat up front: the gross result was produced before a backward-fill leakage fix, while the cost-inclusive run was produced after it. The report says the affected leading gaps were limited, but `7.04 → -59.48` is not a perfectly controlled before-and-after comparison. I still use the pair because it captures the failure mode, not because it proves an exact causal delta.
+## What I actually tested
 
-## The experiment
+This article covers one intentionally narrow reproduction of H3, a cross-sectional reversal baseline, on cached Bybit USDT perpetual data:
 
-I tested six simple, ML-free relative-value baselines on Bybit USDT perpetual futures. The cross-sectional reversal baseline was H3.
+- 15-minute bars from January 2021 to the pre-lockbox boundary in September 2025;
+- an eight-bar, or two-hour, return signal;
+- 90-day formation periods followed by 21-day OOS periods;
+- 76 non-overlapping OOS windows, rolled every 21 days;
+- causal volatility targeting at 10% annualized volatility, using a 96-bar trailing estimate and a 3× leverage cap;
+- a sealed lockbox beginning September 1, 2025, which was not opened for this article.
 
-- 30 liquid perpetuals in a point-in-time universe
-- 15-minute bars from January 2021 through September 2025
-- 90-day formation periods
-- 21-day out-of-sample periods, rolled every 21 days
-- 76 non-overlapping OOS windows
-- a sealed lockbox beginning on September 1, 2025
-- structure-preserving nulls that retained turnover and holding behavior while destroying directional information
-
-Only out-of-sample segments contributed to the reported equity curve. A symbol entered the universe only after it had listed and left after delisting. That matters in crypto: treating today's survivors as if they had always existed quietly introduces survivorship bias.
+The current cache contains `451` symbol directories. That is not the same thing as a properly reconstructed point-in-time liquid universe. The panel uses the histories available in the cache, but the current reproduction does not apply a historical liquidity screen. Survivorship and availability bias therefore remain possible. This result is a development diagnostic, not evidence of a deployable alpha.
 
 ## The signal was deliberately boring
 
-At every 15-minute timestamp, H3 measured each asset's return over the previous eight bars (two hours, not eight days), standardized those returns across the current universe, then reversed the sign.
+At each timestamp, H3 measures every available asset's return over the previous eight bars, standardizes those returns across the cross-section, and reverses the sign.
 
-Recent relative losers received positive weights. Recent relative winners received negative weights. The vector was scaled to unit gross exposure.
+Recent relative losers receive positive weights. Recent relative winners receive negative weights. The vector is scaled to unit gross exposure before portfolio-level volatility targeting.
 
-The core implementation is short:
+The core signal is short enough to inspect:
 
 ```python
-recent = ordered.select(
-    "ts",
-    (pl.col(symbols) / pl.col(symbols).shift(config.lookback_bars) - 1.0),
+recent = prices.select(
+    "ts", (pl.col(symbols) / pl.col(symbols).shift(config.lookback_bars) - 1.0)
 )
 long = recent.unpivot(
     index="ts", on=symbols, variable_name="symbol", value_name="return"
@@ -51,7 +47,9 @@ signal = long.join(stats, on="ts").with_columns(
     .then(-(pl.col("return") - pl.col("mean")) / pl.col("standard_deviation"))
     .otherwise(0.0)
 )
-gross = signal.group_by("ts").agg(gross_signal=pl.col("signal").abs().sum())
+gross = signal.group_by("ts").agg(
+    gross_signal=pl.col("signal").abs().sum()
+)
 normalized = signal.join(gross, on="ts").with_columns(
     weight=pl.when(pl.col("gross_signal") > 0)
     .then(pl.col("signal") / pl.col("gross_signal"))
@@ -59,30 +57,37 @@ normalized = signal.join(gross, on="ts").with_columns(
 )
 ```
 
-The production code handles empty universes and zero cross-sectional variance, but that is the mechanism. No model fitting and no hidden feature search.
+The production implementation also handles an empty cross-section and zero variance. No model is fitted here. There is no feature search hidden behind the result.
 
-A weight decided at time `t` becomes live at `t+1`. That execution shift is enforced by the evaluator rather than left to individual strategies:
+A weight computed at time `t` becomes live at `t+1`. The evaluator enforces that delay centrally:
 
 ```python
 def live(column: str) -> pl.Expr:
     return pl.col(column).shift(1).fill_null(0.0)
 ```
 
-Without that shift, the backtest would let the strategy trade on the same closing price used to calculate its signal.
+Without the shift, the backtest would earn the same closing-bar return used to calculate the signal.
 
-## Why I initially took the result seriously
+## The number that made me stop
 
-The zero-cost run reported a gross Sharpe of `7.04`, `83%` positive OOS windows, and a maximum drawdown near `-10%`.
+With costs set to zero, the current run produced:
 
-![Gross Sharpe across the six Round 1 baselines](figures/gross-sharpe.png)
+| Metric | Gross result |
+|---|---:|
+| Annualized Sharpe | `13.44` |
+| Positive OOS windows | `67 / 76` (`88.2%`) |
+| Maximum drawdown | `-11.62%` |
+| Summed absolute turnover | `29,451` |
 
-A large number alone is not evidence. What caught my attention was that the result appeared across many walk-forward windows rather than coming from one lucky period. It was enough to justify the next question, not enough to call the strategy tradable:
+That last row is the warning. A huge gross Sharpe and huge turnover can be two descriptions of the same fragile result.
 
-> How much turnover does this signal need, and what survives after paying for it?
+![The same signal before and after trading costs](figures/gross-vs-net.png)
 
-## Then I made the backtest pay its bill
+The comparison above is controlled: both bars come from the same code revision, data fingerprint, walk-forward windows, signal weights, and normalization. Only the cost model changes.
 
-The evaluator calculates gross PnL using execution-shifted weights. Turnover is the sum of absolute position changes. Fees and slippage are fixed basis-point charges applied to that turnover; funding is joined separately with the correct long/short sign.
+## Making the backtest pay its bill
+
+Gross PnL uses execution-shifted weights. Turnover is the sum of absolute changes in live positions. Fees and slippage are fixed basis-point charges on turnover; funding is aligned separately with the long/short sign.
 
 The accounting identity is explicit:
 
@@ -92,78 +97,75 @@ slippage = turnover * slippage_bps / 10_000
 net = gross - fees - slippage + funding
 ```
 
-This is not a market-impact simulator. It does not model order-book depth, queue position, partial fills, or a changing spread. It is a transparent fixed-bps friction model. That makes it useful for rejecting obviously uneconomic strategies, but it does not turn a backtest into live execution evidence.
+This is a rejection model, not an execution simulator. It does not model spread variation, order-book depth, queue position, partial fills, market impact, or adverse selection.
 
-With costs enabled and the signal refreshed every bar, cross-sectional reversal produced:
+Using `6 bps` fees plus `4 bps` slippage per side, the same every-bar signal produced:
 
-| Metric | Result |
+| Metric | Net result |
 |---|---:|
-| Net Sharpe | `-59.48` |
+| Annualized Sharpe | `-40.13` |
 | Positive OOS windows | `0 / 76` |
-| Cost / gross alpha | `9.61×` |
-| Total return in the cost run | approximately `-100%` |
+| Cost / gross alpha | `4.00×` |
+| Total return | approximately `-100%` |
 
-![The cost wall for the strongest gross baselines](figures/cost-wall.png)
+The extreme Sharpe is less mysterious than it looks. A continuously refreshed cross-sectional portfolio creates persistent turnover. A relatively stable negative cost stream, annualized from 15-minute observations, can generate an absurdly negative ratio.
 
-The extreme negative Sharpe is less mysterious than it looks. Rebalancing a continuous cross-sectional signal every 15 minutes creates persistent turnover. A relatively stable negative cost stream, annualized at 15-minute frequency, can produce an absurdly negative Sharpe.
-
-The useful number here is `9.61×`: modeled costs were almost ten times the gross PnL generated by this baseline run.
+The useful result is not the theatrical `-40.13`. It is that the modeled trading bill was four times the gross PnL.
 
 ## Slowing the strategy down
 
-The obvious response was to hold weights longer. Under the report's pessimistic `15 bps` per-side sensitivity, net Sharpe improved as turnover fell:
+The obvious response was to hold weights longer. Under a deliberately pessimistic `15 bps` per-side scenario, net Sharpe improved as turnover fell:
 
-| Rebalance interval | Net Sharpe |
-|---|---:|
-| Every bar | `-59.2` |
-| Every 16 bars / 4 hours | `-13.5` |
-| Every 96 bars / 1 day | `-2.8` |
+| Rebalance interval | Net Sharpe | Positive OOS windows |
+|---|---:|---:|
+| Every bar / 15 minutes | `-66.00` | `0 / 76` |
+| Every 16 bars / 4 hours | `-16.24` | `0 / 76` |
+| Every 96 bars / 1 day | `-4.45` | `10 / 76` |
 
-That recovered most of the catastrophic cost drag, but not a positive strategy. The signal decayed while it waited.
+![Cost sensitivity as the signal is rebalanced less often](figures/cost-sensitivity.png)
 
-The friendliest reported corner used daily rebalancing and an approximately `3 bps` maker-cost assumption. Cross-sectional reversal reached `-0.12` Sharpe with half of the windows positive. Under the approximately `7.5 bps` taker scenario, it was `-1.82`.
+The friendliest tested corner used daily rebalancing and `3 bps` per side. It reached a Sharpe of `-0.01`, with `39 / 76` positive windows. A `7.5 bps` daily scenario produced `-1.70`, with `27 / 76` positive windows.
 
-Close to break-even is more interesting than `-59`, but it is still not an edge. Real maker execution would also introduce queue position and fill uncertainty that this vectorized test does not model.
+Slower trading removed much of the damage, but it did not reveal a robust net edge. The signal decayed while it waited. And the maker-style scenario is especially optimistic because this vectorized test says nothing about queue position or whether a passive order would actually fill.
 
-## What actually failed
+## What failed, and what did not
 
-The experiment did not establish that “crypto mean reverts” in some universal sense. It found evidence of a gross short-horizon cross-sectional pattern in this development sample. It also showed that the naive implementation could not capture that pattern after modeled friction.
+The experiment does not establish that “crypto mean reverts.” It shows a strong gross short-horizon reversal pattern inside this particular development sample and cache. It also shows that the naive implementation cannot capture that pattern after even simple modeled friction.
 
-That distinction changed how I looked at the result:
+Those are different conclusions:
 
-- **The research lead:** relative two-hour moves showed a repeatable gross reversal pattern.
-- **The failed strategy:** continuously resizing the entire book consumed far more than the pattern earned.
-- **The engineering problem:** reduce turnover without waiting so long that the signal disappears.
+- **Research lead:** relative two-hour moves contain a repeatable gross pattern in this sample.
+- **Failed strategy:** resizing the book continuously consumes more than the pattern earns.
+- **Open engineering problem:** reduce turnover without waiting so long that the signal disappears.
 
-The next experiments therefore became specific: threshold entries, hysteresis bands, cost-aware sizing, and a proper maker execution model. None of those is assumed to work. They are simply better questions than adding another indicator to the same high-turnover baseline.
+That leaves specific follow-ups: threshold entries, hysteresis bands, cost-aware sizing, historical universe reconstruction, and a fill model for passive execution. None is assumed to work. They are simply better questions than adding more indicators to the same high-turnover baseline.
 
-## Reproduction and limits
+## Reproduction boundary
 
-The internal HFM run uses cached market data:
+The internal HFM repository reproduces the article slice with two commands once the market-data cache exists:
 
 ```bash
-PYTHONPATH=src python scripts/ingest_bybit.py
-PYTHONPATH=src python scripts/run_tournament_bybit.py
+PYTHONPATH=src python scripts/reproduce_round1_h3_article.py
+PYTHONPATH=src python scripts/make_article_h3_charts.py
 ```
 
-The second command is offline once the cache exists. It builds the point-in-time panel, generates the 76 walk-forward windows, evaluates all six entrants, runs the null transformations, and writes machine-readable artifacts.
+The first command rebuilds the panel and 76 walk-forward windows, evaluates all seven cost/rebalance scenarios, and writes machine-readable results. It also records the SHA-256 fingerprint of `1,442` cached files (`880,708,217` bytes), the hashes of every relevant source module, and the Python and Polars versions. The second command creates both figures directly from that result file.
 
-Before treating the headline numbers as anything stronger than development evidence, keep these limits attached:
+The public companion repository contains the article, result snapshot, figures, minimal signal/cost code, deterministic tests, and a manifest that fails CI if any frozen artifact drifts. It does not distribute the market-data cache, so a reader can reproduce the mechanics and verify the published evidence package, but cannot independently regenerate the historical metrics without sourcing the data.
 
-The reported gross Sharpe was measured before a backward-fill leakage fix, while the net cost sweep was measured after it; the report says the effect is minor, but the figures are not a perfectly identical pipeline comparison.
+Before treating the numbers as anything stronger than development evidence, keep four limits attached:
 
-Transaction costs were modelled rather than paid, and maker execution would add queue and fill risk.
-
-These are backtest results, not live trading returns.
-
-Two more design details matter. The 76 rolling windows are not 76 fully independent market regimes, and the sealed lockbox was not used for this article. HFM classified every Round 1 baseline as `REJECT`.
+1. The cached-symbol universe is not a point-in-time liquidity universe and may contain survivorship or availability bias.
+2. Trading costs are fixed-bps assumptions, not observed live fills; maker scenarios omit queue and fill risk.
+3. The sealed lockbox was not evaluated, and these are backtest results rather than live returns.
+4. The 76 OOS windows do not overlap, but they are not 76 independent market regimes.
 
 ## The result I kept
 
-I started the experiment hoping to find an edge. Instead, it gave me a more useful habit: treat turnover as part of the hypothesis, not as cleanup performed after the backtest looks good.
+I started the experiment hoping to find an edge. What survived was a better research rule: turnover belongs inside the hypothesis, not in the cleanup after a backtest looks good.
 
-A gross Sharpe is not a strategy. It is a claim before execution. The strategy begins with what remains after the position delay, turnover, fees, slippage, funding, and untouched data have all had their turn.
+A gross Sharpe is not a strategy. It is a claim before execution. The strategy begins with what remains after the position delay, turnover, fees, slippage, funding, universe construction, and untouched data have all had their turn.
 
-In this case, almost nothing remained.
+In this run, almost nothing remained.
 
-Evidence snapshot: `dcd383ce6ca6b78b32e386580f70105c4b63a605941847633b45bbef2e868d07`
+Results file SHA-256: `7665f878d5de0264aae90367ff6c1fad0206a144a6e817128b7be621b4f9885a`

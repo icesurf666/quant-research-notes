@@ -1,0 +1,216 @@
+{
+  "schema_version": "h3_article_reproduction_v1",
+  "generated_at": "2026-09-21T20:12:06.012402+00:00",
+  "scope": "development_oos_pre_lockbox",
+  "market": "Bybit USDT perpetuals",
+  "timeframe": "15m",
+  "strategy": "xsec_reversal_l8",
+  "runtime": {
+    "python": "3.14.6",
+    "polars": "1.44.1"
+  },
+  "universe": {
+    "construction": "all cached Bybit linear kline symbol directories",
+    "cached_symbol_directories": 451,
+    "point_in_time_liquidity_filter": false
+  },
+  "normalization": {
+    "mode": "vol_target",
+    "target_ann_vol": 0.1,
+    "vol_lookback_bars": 96,
+    "max_leverage": 3.0
+  },
+  "walk_forward": {
+    "formation_days": 90,
+    "oos_days": 21,
+    "step_days": 21,
+    "n_windows": 76,
+    "lockbox_start": "2025-09-01T00:00:00+00:00",
+    "lockbox_end": "2026-09-01T00:00:00+00:00"
+  },
+  "data_fingerprint": {
+    "sha256": "983fb5c1e266923907915a49a6fb66d79f4e45a166b18f47cd58f20c8549a42d",
+    "file_count": 1442,
+    "byte_size": 880708217
+  },
+  "code_sha256": {
+    "scripts/reproduce_round1_h3_article.py": "b88ca8375685effd26df6ab5adc401e66980a38f104dd68c8b2ab6765aab7c3f",
+    "src/hfm/config.py": "c05941afece66799bc90c4e955eed0ca5bfe32f752916c75a6b49babc12b7571",
+    "src/hfm/data/panel_builder.py": "455afcbc0c58fa70f82fd1bd9ca2f825255300a19499fb7de637a6cef041a69f",
+    "src/hfm/data/storage.py": "c84623d2c76d324c6ef77ee7952e8864c4d102ea8bb0b241d349d64279645485",
+    "src/hfm/engine/costs.py": "a931180257ca83a949afa573eb4bdcd3f723eec9996301d8e2ac2b3eac4809e2",
+    "src/hfm/engine/dataset.py": "4cdb852c098741e1b518a5d6ec08d4f4f8eb51739a2862ed90a33048ce8084a0",
+    "src/hfm/engine/frames.py": "04e8a156255d8ebceeec4e735d65bfb072ac5e5cb0d224e4298b85ac1a7bcb91",
+    "src/hfm/engine/judge.py": "7944ca9015cfbe63c3affb21747a8987bd9c28388a9449647a380fcf64f10a96",
+    "src/hfm/engine/metrics.py": "ebd346e5e9e11826d6aa832bdb7d5af08b50db0dd0b469073c9d4b13942cdb64",
+    "src/hfm/engine/portfolio.py": "63f83f7379ed59212d28e8df3ce109ae63725db9b71d461366814872c3dd5804",
+    "src/hfm/engine/strategy.py": "74880c4f1b37d5ae0c3a00888d86cdbfe89009b2a6cac31f1258f040ba74fdb4",
+    "src/hfm/engine/windows.py": "a8b35ad62f208b76c4c91b90535df64cae5231eb439186813ec476fd42c6aabd",
+    "src/hfm/strategies/__init__.py": "d25197853bdd90a8d087a3ab06e2ff8692136bdb01bdaadb0b0ca48e6227ea96",
+    "src/hfm/strategies/rebalanced.py": "5d85b7db26e85dca9ca26f20cbbfd965c7aa707913bb7c7bc29f29df47bf0b98",
+    "src/hfm/strategies/xsec_reversal.py": "ec70349abaa31dae5fb70b3211f295686896183cb2aa90a01189f0c8fa519cfa"
+  },
+  "scenarios": {
+    "gross_every_bar_zero_bps": {
+      "cost_model": {
+        "fee_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "metrics": {
+        "n_bars": 153216,
+        "n_windows": 76,
+        "total_return": 1505.266621412272,
+        "sharpe": 13.440858417626457,
+        "sortino": 14.493656655465223,
+        "max_drawdown": -0.11622854128329807,
+        "hit_rate": 0.5718136487050961,
+        "total_turnover": 29451.186428844572,
+        "avg_gross_exposure": 0.3402211324597078,
+        "avg_net_exposure": 8.212920264125633e-20,
+        "realized_leverage": 0.3402211324597078,
+        "cost_to_gross_alpha": 0.0,
+        "concentration": 0.06540798542149706,
+        "fraction_positive_windows": 0.881578947368421
+      }
+    },
+    "net_every_bar_10_bps": {
+      "cost_model": {
+        "fee_bps": 6.0,
+        "slippage_bps": 4.0
+      },
+      "metrics": {
+        "n_bars": 153216,
+        "n_windows": 76,
+        "total_return": -0.999999999756448,
+        "sharpe": -40.134055074187444,
+        "sortino": -47.29611235814753,
+        "max_drawdown": -0.9999999997564605,
+        "hit_rate": 0.37225877192982454,
+        "total_turnover": 29451.186428844572,
+        "avg_gross_exposure": 0.3402211324597078,
+        "avg_net_exposure": 7.499310927735826e-20,
+        "realized_leverage": 0.3402211324597078,
+        "cost_to_gross_alpha": 4.000287461173995,
+        "concentration": 0.022536990274526325,
+        "fraction_positive_windows": 0.0
+      }
+    },
+    "net_every_bar_15_bps": {
+      "cost_model": {
+        "fee_bps": 10.0,
+        "slippage_bps": 5.0
+      },
+      "metrics": {
+        "n_bars": 153216,
+        "n_windows": 76,
+        "total_return": -0.9999999999999999,
+        "sharpe": -65.99901569489857,
+        "sortino": -79.16002934693758,
+        "max_drawdown": -0.9999999999999999,
+        "hit_rate": 0.2922018588137009,
+        "total_turnover": 29451.186428844572,
+        "avg_gross_exposure": 0.3402211324597078,
+        "avg_net_exposure": 7.035318025885663e-20,
+        "realized_leverage": 0.3402211324597078,
+        "cost_to_gross_alpha": 6.000431191760991,
+        "concentration": 0.021124049885390316,
+        "fraction_positive_windows": 0.0
+      }
+    },
+    "net_4h_15_bps": {
+      "cost_model": {
+        "fee_bps": 10.0,
+        "slippage_bps": 5.0
+      },
+      "metrics": {
+        "n_bars": 153216,
+        "n_windows": 76,
+        "total_return": -0.9998482645522065,
+        "sharpe": -16.23539582940772,
+        "sortino": -18.865721201016758,
+        "max_drawdown": -0.9998499438478148,
+        "hit_rate": 0.47971491228070173,
+        "total_turnover": 6364.311224508733,
+        "avg_gross_exposure": 0.41990911734158654,
+        "avg_net_exposure": 5.631106169060606e-20,
+        "realized_leverage": 0.41990911734158654,
+        "cost_to_gross_alpha": 12.027739200899243,
+        "concentration": 0.023685953837260874,
+        "fraction_positive_windows": 0.0
+      }
+    },
+    "net_daily_15_bps": {
+      "cost_model": {
+        "fee_bps": 10.0,
+        "slippage_bps": 5.0
+      },
+      "metrics": {
+        "n_bars": 153216,
+        "n_windows": 76,
+        "total_return": -0.8911863776569374,
+        "sharpe": -4.447748286211241,
+        "sortino": -5.751850565107526,
+        "max_drawdown": -0.8942412267442734,
+        "hit_rate": 0.49614270050125314,
+        "total_turnover": 1820.223584671674,
+        "avg_gross_exposure": 0.5101392509094936,
+        "avg_net_exposure": 1.2139248791610754e-18,
+        "realized_leverage": 0.5101392509094936,
+        "cost_to_gross_alpha": 4.973816413684081,
+        "concentration": 0.037437888549243487,
+        "fraction_positive_windows": 0.13157894736842105
+      }
+    },
+    "net_daily_maker_3_bps": {
+      "cost_model": {
+        "fee_bps": 2.0,
+        "slippage_bps": 1.0
+      },
+      "metrics": {
+        "n_bars": 153216,
+        "n_windows": 76,
+        "total_return": -0.03224757509435627,
+        "sharpe": -0.012625445403606451,
+        "sortino": -0.016748625432996992,
+        "max_drawdown": -0.2207325989726302,
+        "hit_rate": 0.5037920321637427,
+        "total_turnover": 1820.223584671674,
+        "avg_gross_exposure": 0.5101392509094936,
+        "avg_net_exposure": 1.2601925501913803e-18,
+        "realized_leverage": 0.5101392509094936,
+        "cost_to_gross_alpha": 0.994763282736817,
+        "concentration": 0.03951405062424386,
+        "fraction_positive_windows": 0.5131578947368421
+      }
+    },
+    "net_daily_taker_7_5_bps": {
+      "cost_model": {
+        "fee_bps": 5.5,
+        "slippage_bps": 2.0
+      },
+      "metrics": {
+        "n_bars": 153216,
+        "n_windows": 76,
+        "total_return": -0.5734803154417936,
+        "sharpe": -1.7015799730489831,
+        "sortino": -2.2455114765232453,
+        "max_drawdown": -0.6183397268410169,
+        "hit_rate": 0.5000652673350042,
+        "total_turnover": 1820.223584671674,
+        "avg_gross_exposure": 0.5101392509094936,
+        "avg_net_exposure": 1.1862254157631453e-18,
+        "realized_leverage": 0.5101392509094936,
+        "cost_to_gross_alpha": 2.4869082068420405,
+        "concentration": 0.04359107275530121,
+        "fraction_positive_windows": 0.35526315789473684
+      }
+    }
+  },
+  "limitations": [
+    "Development backtest only; the sealed lockbox is not evaluated.",
+    "The cached-symbol universe is not a point-in-time liquidity universe and may contain survivorship or availability bias.",
+    "Trading costs are fixed-bps assumptions, not observed live fills.",
+    "Maker scenarios do not model queue position, fill probability, or adverse selection.",
+    "Rolling OOS windows are non-overlapping but not independent market regimes."
+  ]
+}

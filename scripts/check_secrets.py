@@ -29,6 +29,8 @@ def tracked_files() -> list[Path]:
 def main() -> None:
     findings: list[str] = []
     for path in tracked_files():
+        if not path.is_file():
+            continue
         if path.name in FORBIDDEN_NAMES:
             findings.append(f"forbidden filename: {path.relative_to(ROOT)}")
             continue

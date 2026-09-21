@@ -1,14 +1,32 @@
 {
-  "version": "editorial_review_v1",
-  "article_sha256": "f455c3cbf02e895e9c8949535449de8c0c34bbd0e4a05e3d85b577d509176df7",
-  "evidence_snapshot_sha256": "dcd383ce6ca6b78b32e386580f70105c4b63a605941847633b45bbef2e868d07",
+  "version": "editorial_review_v2",
+  "article_sha256": "ccbc58c683386eea68c7a85835f6895fa8619ca1f4dad8e0f451089b13766ba3",
+  "results_sha256": "7665f878d5de0264aae90367ff6c1fad0206a144a6e817128b7be621b4f9885a",
   "passed": true,
   "passes": {
-    "evidence_and_numbers": true,
-    "implementation": true,
-    "editorial": true,
-    "independent_source_verifier": true
+    "results_and_display_values": true,
+    "implementation_claims": true,
+    "limitations_present": true,
+    "humanizer_audit": true,
+    "independent_source_verifier": true,
+    "visual_inspection": true
   },
-  "unsupported_claims": [],
-  "contradictions": []
+  "humanizer": {
+    "version": "humanizer_2_11_2_adapted_v1",
+    "score": 100,
+    "word_count": 1394,
+    "findings": []
+  },
+  "source_verifier": {
+    "provider": "openrouter",
+    "model": "anthropic/claude-sonnet-4.6",
+    "unsupported_claims": [],
+    "substantive_contradictions": [],
+    "raw_entries_explicitly_withdrawn_by_verifier": 4
+  },
+  "known_boundaries": [
+    "The public repository does not include the market-data cache.",
+    "The result is development evidence, not a lockbox or live-trading result.",
+    "The cached-symbol universe is not reconstructed as a point-in-time liquidity universe."
+  ]
 }
