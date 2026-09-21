@@ -42,6 +42,9 @@ def main() -> None:
     for banned in metrics["banned_claims"]:
         if banned.lower() in article.lower():
             failures.append(f"article contains banned claim: {banned}")
+    for marker in metrics["required_code_markers"]:
+        if marker not in article:
+            failures.append(f"article is missing required code marker: {marker}")
     for relative, expected in manifest["sha256"].items():
         path = study / relative
         if not path.is_file():

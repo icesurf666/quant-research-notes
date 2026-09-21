@@ -35,15 +35,27 @@ Recent relative losers received positive weights. Recent relative winners receiv
 The core implementation is short:
 
 ```python
-recent = prices.select("ts", (pl.col(cols) / pl.col(cols).shift(self.lookback) - 1.0))
-long = recent.unpivot(index="ts", on=cols, variable_name="symbol", value_name="r").drop_nulls("r")
-stats = long.group_by("ts").agg(mu=pl.col("r").mean(), sd=pl.col("r").std())
-long = long.join(stats, on="ts").with_columns(
-    sig=pl.when(pl.col("sd") > 0).then(-(pl.col("r") - pl.col("mu")) / pl.col("sd")).otherwise(0.0)
+recent = ordered.select(
+    "ts",
+    (pl.col(symbols) / pl.col(symbols).shift(config.lookback_bars) - 1.0),
 )
-gross = long.group_by("ts").agg(g=pl.col("sig").abs().sum())
-long = long.join(gross, on="ts").with_columns(
-    w=pl.when(pl.col("g") > 0).then(pl.col("sig") / pl.col("g")).otherwise(0.0)
+long = recent.unpivot(
+    index="ts", on=symbols, variable_name="symbol", value_name="return"
+).drop_nulls("return")
+stats = long.group_by("ts").agg(
+    mean=pl.col("return").mean(),
+    standard_deviation=pl.col("return").std(),
+)
+signal = long.join(stats, on="ts").with_columns(
+    signal=pl.when(pl.col("standard_deviation") > 0)
+    .then(-(pl.col("return") - pl.col("mean")) / pl.col("standard_deviation"))
+    .otherwise(0.0)
+)
+gross = signal.group_by("ts").agg(gross_signal=pl.col("signal").abs().sum())
+normalized = signal.join(gross, on="ts").with_columns(
+    weight=pl.when(pl.col("gross_signal") > 0)
+    .then(pl.col("signal") / pl.col("gross_signal"))
+    .otherwise(0.0)
 )
 ```
 

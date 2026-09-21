@@ -1,6 +1,6 @@
 {
   "version": "editorial_review_v1",
-  "article_sha256": "77b460c63d5ebeabc55c59aef32fa8a723de93c332ac082d8d354c2777962a1b",
+  "article_sha256": "f455c3cbf02e895e9c8949535449de8c0c34bbd0e4a05e3d85b577d509176df7",
   "evidence_snapshot_sha256": "dcd383ce6ca6b78b32e386580f70105c4b63a605941847633b45bbef2e868d07",
   "passed": true,
   "passes": {

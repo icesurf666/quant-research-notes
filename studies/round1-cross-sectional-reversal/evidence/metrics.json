@@ -45,5 +45,11 @@
     "live trading result",
     "production-ready strategy"
   ],
+  "required_code_markers": [
+    "shift(config.lookback_bars)",
+    "pl.col(\"signal\") / pl.col(\"gross_signal\")",
+    ".shift(1).fill_null(0.0)",
+    "net = gross - fees - slippage + funding"
+  ],
   "source_snapshot_sha256": "dcd383ce6ca6b78b32e386580f70105c4b63a605941847633b45bbef2e868d07"
 }
