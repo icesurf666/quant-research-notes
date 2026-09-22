@@ -4,12 +4,12 @@
   "full_historical_reproduction": false,
   "sha256": {
     "README.md": "f29636d4cdd57081ceb18b4d37e6808b228eeb50fc5a447e2192522e219c338d",
-    "article.md": "ccbc58c683386eea68c7a85835f6895fa8619ca1f4dad8e0f451089b13766ba3",
-    "review.json": "f9d82a521f7d6683cd06b4213f70d4dc81ad8e9a50248881b1121fcf0bb1ca87",
-    "evidence/metrics.json": "396e791b1a32544ffe6dc82fdd029429f1476496ec6fae2aef7ce77c30a2299a",
-    "evidence/results.json": "7665f878d5de0264aae90367ff6c1fad0206a144a6e817128b7be621b4f9885a",
-    "figures/gross-vs-net.png": "cf6ce6c0ea46fc8c6ecf6f3aa37f47868c0a5f2d849af592afa75b68874d01a9",
-    "figures/cost-sensitivity.png": "946f2202ffe81501a53a01675aaed056724f307e92c55813b2533441a0e766ab",
+    "article.md": "90a2f20aa5c0fe741716e97392cdeb2f73b072104d76b0e0b481273361750451",
+    "review.json": "953f5c10ef0a8271c046f023bdc503aae1bb6726487497fa27e8411d0a69df83",
+    "evidence/metrics.json": "6fa999ab95a469eed21dbb7332b1e7fdcc714aadebfe96424f8fad19993b7c78",
+    "evidence/results.json": "fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9",
+    "figures/baseline-vs-net.png": "19e56924a2c2a85c0e714f301f8ca56a19716e082d4a44d1805ce2ec5606f661",
+    "figures/cost-sensitivity.png": "657a448a60b48718f2cc172d76fcd4bd92b6bdcde71da7d490cc3b634d1630fd",
     "figures/workspace-cost-model.jpg": "b3ef107d57d6d630ce8fde72b33399f46462430b2a7a9681417766afe3ca8e85"
   }
 }

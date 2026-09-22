@@ -1,10 +1,11 @@
 {
   "version": "editorial_review_v2",
-  "article_sha256": "ccbc58c683386eea68c7a85835f6895fa8619ca1f4dad8e0f451089b13766ba3",
-  "results_sha256": "7665f878d5de0264aae90367ff6c1fad0206a144a6e817128b7be621b4f9885a",
+  "article_sha256": "90a2f20aa5c0fe741716e97392cdeb2f73b072104d76b0e0b481273361750451",
+  "results_sha256": "fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9",
   "passed": true,
   "passes": {
     "results_and_display_values": true,
+    "byte_identical_repeat_runs": true,
     "implementation_claims": true,
     "limitations_present": true,
     "humanizer_audit": true,
@@ -14,7 +15,7 @@
   "humanizer": {
     "version": "humanizer_2_11_2_adapted_v1",
     "score": 100,
-    "word_count": 1394,
+    "word_count": 1465,
     "findings": []
   },
   "source_verifier": {
@@ -22,11 +23,12 @@
     "model": "anthropic/claude-sonnet-4.6",
     "unsupported_claims": [],
     "substantive_contradictions": [],
-    "raw_entries_explicitly_withdrawn_by_verifier": 4
+    "raw_entries_explicitly_withdrawn_by_verifier": 0
   },
   "known_boundaries": [
     "The public repository does not include the market-data cache.",
     "The result is development evidence, not a lockbox or live-trading result.",
-    "The cached-symbol universe is not reconstructed as a point-in-time liquidity universe."
+    "The cached-symbol universe is not reconstructed as a point-in-time liquidity universe.",
+    "The zero-transaction-cost baseline includes funding PnL."
   ]
 }

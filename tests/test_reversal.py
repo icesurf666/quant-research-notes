@@ -42,3 +42,20 @@ def test_lookback_must_be_positive() -> None:
         assert "positive" in str(error)
     else:
         raise AssertionError("zero lookback must be rejected")
+
+
+def test_future_price_change_does_not_rewrite_past_weights() -> None:
+    original = _prices()
+    changed_future = original.with_columns(
+        pl.when(pl.int_range(pl.len()) == 3)
+        .then(pl.lit(1_000.0))
+        .otherwise(pl.col("winner"))
+        .alias("winner")
+    )
+
+    original_weights = cross_sectional_reversal(original, ReversalConfig(lookback_bars=1)).head(2)
+    changed_weights = cross_sectional_reversal(
+        changed_future, ReversalConfig(lookback_bars=1)
+    ).head(2)
+
+    assert original_weights.equals(changed_weights)

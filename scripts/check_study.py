@@ -53,10 +53,12 @@ def main() -> None:
 
     scenarios = results["scenarios"]
     headline_checks = {
-        "gross_sharpe": scenarios["gross_every_bar_zero_bps"]["metrics"]["sharpe"],
-        "gross_positive_oos_windows": scenarios["gross_every_bar_zero_bps"]["metrics"][
-            "fraction_positive_windows"
-        ],
+        "zero_transaction_cost_sharpe": scenarios["baseline_every_bar_zero_transaction_bps"][
+            "metrics"
+        ]["sharpe"],
+        "zero_transaction_cost_positive_oos_windows": scenarios[
+            "baseline_every_bar_zero_transaction_bps"
+        ]["metrics"]["fraction_positive_windows"],
         "net_sharpe_10_bps": scenarios["net_every_bar_10_bps"]["metrics"]["sharpe"],
         "net_positive_oos_windows_10_bps": scenarios["net_every_bar_10_bps"]["metrics"][
             "fraction_positive_windows"

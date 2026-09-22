@@ -16,9 +16,9 @@ PATTERNS = {
 FORBIDDEN_NAMES = {".env", ".env.local", "id_rsa", "id_ed25519"}
 
 
-def tracked_files() -> list[Path]:
+def public_worktree_files() -> list[Path]:
     result = subprocess.run(
-        ["git", "ls-files", "-z"],
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
         cwd=ROOT,
         check=True,
         capture_output=True,
@@ -28,7 +28,7 @@ def tracked_files() -> list[Path]:
 
 def main() -> None:
     findings: list[str] = []
-    for path in tracked_files():
+    for path in public_worktree_files():
         if not path.is_file():
             continue
         if path.name in FORBIDDEN_NAMES:

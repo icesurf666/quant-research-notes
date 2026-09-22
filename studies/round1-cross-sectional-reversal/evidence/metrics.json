@@ -4,8 +4,8 @@
   "evidence_stage": "development_backtest",
   "forward_confirmed": false,
   "headline": {
-    "gross_sharpe": 13.440858417626457,
-    "gross_positive_oos_windows": 0.881578947368421,
+    "zero_transaction_cost_sharpe": 13.440858417626457,
+    "zero_transaction_cost_positive_oos_windows": 0.881578947368421,
     "net_sharpe_10_bps": -40.134055074187444,
     "net_positive_oos_windows_10_bps": 0.0,
     "oos_windows": 76,
@@ -43,6 +43,7 @@
   ],
   "limitations": [
     "The cached-symbol universe is not a point-in-time liquidity universe and may contain survivorship or availability bias.",
+    "The zero-transaction-cost baseline still includes funding PnL and is not a pure gross-price-return series.",
     "Trading costs are fixed-bps assumptions, not observed live fills; maker scenarios omit queue and fill risk.",
     "The sealed lockbox was not evaluated, and these are backtest results rather than live returns.",
     "The 76 OOS windows do not overlap, but they are not 76 independent market regimes."
@@ -59,5 +60,5 @@
     ".shift(1).fill_null(0.0)",
     "net = gross - fees - slippage + funding"
   ],
-  "results_sha256": "7665f878d5de0264aae90367ff6c1fad0206a144a6e817128b7be621b4f9885a"
+  "results_sha256": "fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9"
 }

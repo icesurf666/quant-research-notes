@@ -2,7 +2,7 @@
 
 I was not trying to prove a grand theory about crypto. I was testing simple, falsifiable baselines and looking for one result worth a second experiment.
 
-Cross-sectional reversal looked almost too clean: gross Sharpe `13.44`, with positive returns in `67 / 76` reported out-of-sample windows. Then I charged the same signal for the trading it required. At `10 bps` per side, net Sharpe fell to `-40.13`, and not one of those 76 windows remained positive.
+Cross-sectional reversal looked almost too clean: Sharpe `13.44` before transaction costs, with positive returns in `67 / 76` reported out-of-sample windows. Then I charged the same signal for the trading it required. At `10 bps` per side, net Sharpe fell to `-40.13`, and not one of those 76 windows remained positive.
 
 That is not a typo. It is what can happen when a short-lived pattern asks for a new portfolio every 15 minutes.
 
@@ -20,6 +20,8 @@ This article covers one intentionally narrow reproduction of H3, a cross-section
 - 76 non-overlapping OOS windows, rolled every 21 days;
 - causal volatility targeting at 10% annualized volatility, using a 96-bar trailing estimate and a 3× leverage cap;
 - a sealed lockbox beginning September 1, 2025, which was not opened for this article.
+
+A window counts as positive when the sum of its per-bar returns is greater than zero. That is the exact definition used by the evaluator for the window fractions below.
 
 The current cache contains `451` symbol directories. That is not the same thing as a properly reconstructed point-in-time liquid universe. The panel uses the histories available in the cache, but the current reproduction does not apply a historical liquidity screen. Survivorship and availability bias therefore remain possible. This result is a development diagnostic, not evidence of a deployable alpha.
 
@@ -70,18 +72,20 @@ Without the shift, the backtest would earn the same closing-bar return used to c
 
 ## The number that made me stop
 
-With costs set to zero, the current run produced:
+With fees and slippage set to zero, the current run produced:
 
-| Metric | Gross result |
+The zero-transaction-cost baseline still includes funding PnL and is not a pure gross-price-return series. Funding belongs to holding a perpetual position rather than transaction execution, so `13.44` is the baseline Sharpe before fees and slippage.
+
+| Metric | Zero-transaction-cost baseline |
 |---|---:|
 | Annualized Sharpe | `13.44` |
 | Positive OOS windows | `67 / 76` (`88.2%`) |
 | Maximum drawdown | `-11.62%` |
 | Summed absolute turnover | `29,451` |
 
-That last row is the warning. A huge gross Sharpe and huge turnover can be two descriptions of the same fragile result.
+That last row is the warning. A huge pre-cost Sharpe and huge turnover can be two descriptions of the same fragile result.
 
-![The same signal before and after trading costs](figures/gross-vs-net.png)
+![The same signal before and after trading costs](figures/baseline-vs-net.png)
 
 The comparison above is controlled: both bars come from the same code revision, data fingerprint, walk-forward windows, signal weights, and normalization. Only the cost model changes.
 
@@ -130,11 +134,11 @@ Slower trading removed much of the damage, but it did not reveal a robust net ed
 
 ## What failed, and what did not
 
-The experiment does not establish that “crypto mean reverts.” It shows a strong gross short-horizon reversal pattern inside this particular development sample and cache. It also shows that the naive implementation cannot capture that pattern after even simple modeled friction.
+The experiment does not establish that “crypto mean reverts.” It shows a strong pre-transaction-cost short-horizon reversal pattern inside this particular development sample and cache. It also shows that the naive implementation cannot capture that pattern after even simple modeled friction.
 
 Those are different conclusions:
 
-- **Research lead:** relative two-hour moves contain a repeatable gross pattern in this sample.
+- **Research lead:** relative two-hour moves contain a repeatable pre-cost pattern in this sample.
 - **Failed strategy:** resizing the book continuously consumes more than the pattern earns.
 - **Open engineering problem:** reduce turnover without waiting so long that the signal disappears.
 
@@ -164,8 +168,8 @@ Before treating the numbers as anything stronger than development evidence, keep
 
 I started the experiment hoping to find an edge. What survived was a better research rule: turnover belongs inside the hypothesis, not in the cleanup after a backtest looks good.
 
-A gross Sharpe is not a strategy. It is a claim before execution. The strategy begins with what remains after the position delay, turnover, fees, slippage, funding, universe construction, and untouched data have all had their turn.
+A pre-cost Sharpe is not a strategy. It is a claim before execution. The strategy begins with what remains after the position delay, turnover, fees, slippage, funding, universe construction, and untouched data have all had their turn.
 
 In this run, almost nothing remained.
 
-Results file SHA-256: `7665f878d5de0264aae90367ff6c1fad0206a144a6e817128b7be621b4f9885a`
+Results file SHA-256: `fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9`
