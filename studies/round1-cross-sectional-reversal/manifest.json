@@ -4,12 +4,14 @@
   "full_historical_reproduction": false,
   "sha256": {
     "README.md": "f29636d4cdd57081ceb18b4d37e6808b228eeb50fc5a447e2192522e219c338d",
-    "article.md": "90a2f20aa5c0fe741716e97392cdeb2f73b072104d76b0e0b481273361750451",
-    "review.json": "953f5c10ef0a8271c046f023bdc503aae1bb6726487497fa27e8411d0a69df83",
+    "article.md": "124f04387bc672d43d31c859ea2574ab92e39ff175d2c1f36153e2a2b769402f",
+    "review.json": "0655bf53e12df436dc65347ccc200db7dd9b85f38c49d207ffc6b2be4113bd3e",
     "evidence/metrics.json": "3fa49d709174ccc8d2ce53bee4e0a9fd96b85bfa567092d5ec7842d3abc1f40c",
     "evidence/results.json": "fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9",
     "figures/baseline-vs-net.png": "19e56924a2c2a85c0e714f301f8ca56a19716e082d4a44d1805ce2ec5606f661",
     "figures/cost-sensitivity.png": "657a448a60b48718f2cc172d76fcd4bd92b6bdcde71da7d490cc3b634d1630fd",
+    "figures/dev-cover.png": "26927b7ea8fbf68bde70f87009f2f2ce3c37cca47756d30591236f30f84a6148",
+    "figures/dev-cover.svg": "ce81071c61d96f15176e078067d1cc04fbb6687b220c99da2c59816bcdc385c4",
     "figures/workspace-cost-model.jpg": "b3ef107d57d6d630ce8fde72b33399f46462430b2a7a9681417766afe3ca8e85"
   }
 }

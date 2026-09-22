@@ -155,7 +155,7 @@ PYTHONPATH=src python scripts/make_article_h3_charts.py
 
 The first command rebuilds the panel and 76 walk-forward windows, evaluates all seven cost/rebalance scenarios, and writes machine-readable results. It also records the SHA-256 fingerprint of `1,442` cached files (`880,708,217` bytes), the hashes of every relevant source module, and the Python and Polars versions. The second command creates both figures directly from that result file.
 
-The public companion repository contains the article, result snapshot, figures, minimal signal/cost code, deterministic tests, and a manifest that fails CI if any frozen artifact drifts. It does not distribute the market-data cache, so a reader can reproduce the mechanics and verify the published evidence package, but cannot independently regenerate the historical metrics without sourcing the data.
+The [public companion repository](https://github.com/icesurf666/quant-research-notes) contains the article, result snapshot, figures, minimal signal/cost code, deterministic tests, and a manifest that fails CI if any frozen artifact drifts. It does not distribute the market-data cache, so a reader can reproduce the mechanics and verify the published evidence package, but cannot independently regenerate the historical metrics without sourcing the data.
 
 Before treating the numbers as anything stronger than development evidence, keep four limits attached:
 
