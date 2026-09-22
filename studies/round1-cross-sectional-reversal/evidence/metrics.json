@@ -6,21 +6,41 @@
   "headline": {
     "zero_transaction_cost_sharpe": 13.440858417626457,
     "zero_transaction_cost_positive_oos_windows": 0.881578947368421,
+    "zero_transaction_cost_max_drawdown": -0.116228541283,
+    "zero_transaction_cost_total_turnover": 29451.186428844572,
     "net_sharpe_10_bps": -40.134055074187444,
     "net_positive_oos_windows_10_bps": 0.0,
+    "net_total_return_10_bps": -0.999999999756,
     "oos_windows": 76,
     "cost_to_gross_alpha_10_bps": 4.000287461173995
   },
   "sensitivity": {
     "pessimistic_15_bps": {
-      "every_bar": -65.99901569489857,
-      "every_16_bars": -16.23539582940772,
-      "every_96_bars": -4.447748286211242
+      "every_bar": -65.999015694899,
+      "every_bar_positive_windows": 0.0,
+      "every_16_bars": -16.235395829408,
+      "every_16_bars_positive_windows": 0.0,
+      "every_96_bars": -4.447748286211,
+      "every_96_bars_positive_windows": 0.131578947368
     },
     "daily": {
-      "maker_3_bps": -0.012625445403606508,
-      "taker_7_5_bps": -1.7015799730489825
+      "maker_3_bps": -0.012625445404,
+      "maker_3_bps_positive_windows": 0.513157894737,
+      "taker_7_5_bps": -1.701579973049,
+      "taker_7_5_bps_positive_windows": 0.355263157895
     }
+  },
+  "reproduction": {
+    "cached_symbol_directories": 451,
+    "data_file_count": 1442,
+    "data_byte_size": 880708217,
+    "formation_days": 90,
+    "oos_days": 21,
+    "step_days": 21,
+    "lookback_bars": 8,
+    "target_ann_vol": 0.1,
+    "vol_lookback_bars": 96,
+    "max_leverage": 3.0
   },
   "locked_displays": [
     "13.44",
@@ -39,7 +59,13 @@
     "27 / 76",
     "451",
     "1,442",
-    "880,708,217"
+    "880,708,217",
+    "eight-bar",
+    "90-day",
+    "21-day",
+    "10% annualized",
+    "96-bar",
+    "3× leverage"
   ],
   "limitations": [
     "The cached-symbol universe is not a point-in-time liquidity universe and may contain survivorship or availability bias.",

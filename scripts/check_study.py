@@ -59,10 +59,17 @@ def main() -> None:
         "zero_transaction_cost_positive_oos_windows": scenarios[
             "baseline_every_bar_zero_transaction_bps"
         ]["metrics"]["fraction_positive_windows"],
+        "zero_transaction_cost_max_drawdown": scenarios["baseline_every_bar_zero_transaction_bps"][
+            "metrics"
+        ]["max_drawdown"],
+        "zero_transaction_cost_total_turnover": scenarios[
+            "baseline_every_bar_zero_transaction_bps"
+        ]["metrics"]["total_turnover"],
         "net_sharpe_10_bps": scenarios["net_every_bar_10_bps"]["metrics"]["sharpe"],
         "net_positive_oos_windows_10_bps": scenarios["net_every_bar_10_bps"]["metrics"][
             "fraction_positive_windows"
         ],
+        "net_total_return_10_bps": scenarios["net_every_bar_10_bps"]["metrics"]["total_return"],
         "oos_windows": results["walk_forward"]["n_windows"],
         "cost_to_gross_alpha_10_bps": scenarios["net_every_bar_10_bps"]["metrics"][
             "cost_to_gross_alpha"
@@ -75,15 +82,53 @@ def main() -> None:
 
     sensitivity_checks = {
         ("pessimistic_15_bps", "every_bar"): scenarios["net_every_bar_15_bps"]["metrics"]["sharpe"],
+        ("pessimistic_15_bps", "every_bar_positive_windows"): scenarios["net_every_bar_15_bps"][
+            "metrics"
+        ]["fraction_positive_windows"],
         ("pessimistic_15_bps", "every_16_bars"): scenarios["net_4h_15_bps"]["metrics"]["sharpe"],
+        ("pessimistic_15_bps", "every_16_bars_positive_windows"): scenarios["net_4h_15_bps"][
+            "metrics"
+        ]["fraction_positive_windows"],
         ("pessimistic_15_bps", "every_96_bars"): scenarios["net_daily_15_bps"]["metrics"]["sharpe"],
+        ("pessimistic_15_bps", "every_96_bars_positive_windows"): scenarios["net_daily_15_bps"][
+            "metrics"
+        ]["fraction_positive_windows"],
         ("daily", "maker_3_bps"): scenarios["net_daily_maker_3_bps"]["metrics"]["sharpe"],
+        ("daily", "maker_3_bps_positive_windows"): scenarios["net_daily_maker_3_bps"]["metrics"][
+            "fraction_positive_windows"
+        ],
         ("daily", "taker_7_5_bps"): scenarios["net_daily_taker_7_5_bps"]["metrics"]["sharpe"],
+        ("daily", "taker_7_5_bps_positive_windows"): scenarios["net_daily_taker_7_5_bps"][
+            "metrics"
+        ]["fraction_positive_windows"],
     }
     for (group, key), actual in sensitivity_checks.items():
         expected = metrics["sensitivity"][group][key]
         if not math.isclose(float(actual), float(expected), rel_tol=0.0, abs_tol=1e-12):
             failures.append(f"sensitivity metric drift: {group}.{key}")
+
+    strategy_name = str(results["strategy"])
+    try:
+        signal_lookback = int(strategy_name.rsplit("l", maxsplit=1)[1])
+    except (IndexError, ValueError):
+        failures.append(f"cannot derive signal lookback from strategy: {strategy_name}")
+        signal_lookback = -1
+    reproduction_checks = {
+        "cached_symbol_directories": results["universe"]["cached_symbol_directories"],
+        "data_file_count": results["data_fingerprint"]["file_count"],
+        "data_byte_size": results["data_fingerprint"]["byte_size"],
+        "formation_days": results["walk_forward"]["formation_days"],
+        "oos_days": results["walk_forward"]["oos_days"],
+        "step_days": results["walk_forward"]["step_days"],
+        "lookback_bars": signal_lookback,
+        "target_ann_vol": results["normalization"]["target_ann_vol"],
+        "vol_lookback_bars": results["normalization"]["vol_lookback_bars"],
+        "max_leverage": results["normalization"]["max_leverage"],
+    }
+    for key, actual in reproduction_checks.items():
+        expected = metrics["reproduction"][key]
+        if not math.isclose(float(actual), float(expected), rel_tol=0.0, abs_tol=1e-12):
+            failures.append(f"reproduction setting drift: {key}")
 
     for display in metrics["locked_displays"]:
         if display not in article:
