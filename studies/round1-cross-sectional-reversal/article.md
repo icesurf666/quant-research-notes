@@ -172,4 +172,6 @@ A pre-cost Sharpe is not a strategy. It is a claim before execution. The strateg
 
 In this run, almost nothing remained.
 
+If you have watched a promising backtest collapse once execution entered the model, what did the damage: turnover, spread, fill probability, market impact, or something less obvious?
+
 Results file SHA-256: `fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9`
