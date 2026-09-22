@@ -3,7 +3,7 @@ from datetime import UTC, datetime, timedelta
 import polars as pl
 import pytest
 
-from pkazantsev_research import ReversalConfig, cross_sectional_reversal
+from quant_research_notes import ReversalConfig, cross_sectional_reversal
 
 
 def _prices() -> pl.DataFrame:

@@ -3,7 +3,7 @@ from datetime import UTC, datetime, timedelta
 import polars as pl
 import pytest
 
-from pkazantsev_research import CostModel, apply_costs_and_funding
+from quant_research_notes import CostModel, apply_costs_and_funding
 
 
 def test_weight_decision_is_delayed_one_bar() -> None:

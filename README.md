@@ -1,10 +1,10 @@
-# Pavel Kazantsev: research companions
+# Quantitative Research Notes
 
-This repository contains the smallest public artifact needed to inspect the code
-behind a published engineering article. It is not a mirror of my private research
-system and it is not a collection of trading strategies.
+This repository contains compact, reproducible evidence packages for published
+quantitative engineering studies. It is not a strategy catalog and does not
+present development backtests as deployable trading systems.
 
-Each folder under `studies/` owns:
+Each folder under `studies/` contains:
 
 - the article;
 - immutable headline metrics and limitations;
@@ -14,6 +14,19 @@ Each folder under `studies/` owns:
 
 The first study is
 [`round1-cross-sectional-reversal`](studies/round1-cross-sectional-reversal/README.md).
+
+## Research standard
+
+Each published result is treated as an auditable claim. A study must include:
+
+- a machine-readable result snapshot tied to one code and data revision;
+- the assumptions and accounting identities required to interpret the result;
+- deterministic tests for causal timing and portfolio mechanics;
+- visible limitations and an explicit evidence status;
+- integrity checks that fail when the article, figures, metrics, or review record drift.
+
+Development backtests are reported as development evidence. Lockbox, paper-trading,
+and live results are labeled separately and are never inferred from one another.
 
 ## What can be reproduced
 

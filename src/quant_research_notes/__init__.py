@@ -1,4 +1,4 @@
-"""Public, minimal implementations used by Pavel Kazantsev's research articles."""
+"""Minimal implementations supporting the published quantitative studies."""
 
 from .costs import CostModel, apply_costs_and_funding
 from .reversal import ReversalConfig, cross_sectional_reversal

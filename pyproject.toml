@@ -3,9 +3,9 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pkazantsev-research"
+name = "quant-research-notes"
 version = "0.1.0"
-description = "Small, evidence-backed companions for published engineering studies."
+description = "Reproducible evidence packages for quantitative engineering studies."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["polars>=1.20,<2"]
@@ -35,4 +35,4 @@ select = ["E", "F", "I", "B", "UP", "RUF"]
 [tool.mypy]
 python_version = "3.11"
 strict = true
-packages = ["pkazantsev_research"]
+packages = ["quant_research_notes"]
