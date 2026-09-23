@@ -4,9 +4,9 @@ I was not trying to prove a grand theory about crypto. I was testing simple, fal
 
 Cross-sectional reversal looked almost too clean: Sharpe `13.44` before transaction costs, with positive returns in `67 / 76` reported out-of-sample windows. Then I charged the same signal for the trading it required. At `10 bps` per side, net Sharpe fell to `-40.13`, and not one of those 76 windows remained positive.
 
-That is not a typo. It is what can happen when a short-lived pattern asks for a new portfolio every 15 minutes.
+That is not a typo. I genuinely did not see it coming — the pre-cost numbers looked clean enough that I spent twenty minutes checking whether I had made an error somewhere before I accepted the result. It is what can happen when a short-lived pattern asks for a new portfolio every 15 minutes.
 
-![The HFM cost and funding implementation open during the experiment](figures/workspace-cost-model.jpg)
+![The HFM cost and funding implementation open during the experiment](https://raw.githubusercontent.com/icesurf666/quant-research-notes/main/studies/round1-cross-sectional-reversal/figures/workspace-cost-model.jpg)
 
 *The less glamorous part of the experiment: execution delay, turnover, fees, slippage, and funding inside the same evaluation path.*
 
@@ -72,7 +72,9 @@ Without the shift, the backtest would earn the same closing-bar return used to c
 
 ## The number that made me stop
 
-With fees and slippage set to zero, the current run produced:
+With fees and slippage set to zero, the current run produced the following.
+
+I am not a professional quant. I run these experiments on my own time, publish the results as I go, and try to document what actually happens rather than what I hoped would happen. When I saw `13.44` I let myself get briefly excited. That was a mistake.
 
 The zero-transaction-cost baseline still includes funding PnL and is not a pure gross-price-return series. Funding belongs to holding a perpetual position rather than transaction execution, so `13.44` is the baseline Sharpe before fees and slippage.
 
@@ -85,7 +87,7 @@ The zero-transaction-cost baseline still includes funding PnL and is not a pure 
 
 That last row is the warning. A huge pre-cost Sharpe and huge turnover can be two descriptions of the same fragile result.
 
-![The same signal before and after trading costs](figures/baseline-vs-net.png)
+![The same signal before and after trading costs](https://raw.githubusercontent.com/icesurf666/quant-research-notes/main/studies/round1-cross-sectional-reversal/figures/baseline-vs-net.png)
 
 The comparison above is controlled: both bars come from the same code revision, data fingerprint, walk-forward windows, signal weights, and normalization. Only the cost model changes.
 
@@ -112,6 +114,8 @@ Using `6 bps` fees plus `4 bps` slippage per side, the same every-bar signal pro
 | Cost / gross alpha | `4.00×` |
 | Total return | approximately `-100%` |
 
+I was hoping the cost model would hurt but leave something survivable. It did not. At this point I considered just not publishing — a Sharpe of `-40.13` is not a great headline. But the result is real, the methodology is documented, and a clean failure is more useful to me than a buried one.
+
 The extreme Sharpe is less mysterious than it looks. A continuously refreshed cross-sectional portfolio creates persistent turnover. A relatively stable negative cost stream, annualized from 15-minute observations, can generate an absurdly negative ratio.
 
 The useful result is not the theatrical `-40.13`. It is that the modeled trading bill was four times the gross PnL.
@@ -126,7 +130,7 @@ The obvious response was to hold weights longer. Under a deliberately pessimisti
 | Every 16 bars / 4 hours | `-16.24` | `0 / 76` |
 | Every 96 bars / 1 day | `-4.45` | `10 / 76` |
 
-![Cost sensitivity as the signal is rebalanced less often](figures/cost-sensitivity.png)
+![Cost sensitivity as the signal is rebalanced less often](https://raw.githubusercontent.com/icesurf666/quant-research-notes/main/studies/round1-cross-sectional-reversal/figures/cost-sensitivity.png)
 
 The friendliest tested corner used daily rebalancing and `3 bps` per side. It reached a Sharpe of `-0.01`, with `39 / 76` positive windows. A `7.5 bps` daily scenario produced `-1.70`, with `27 / 76` positive windows.
 
@@ -174,4 +178,4 @@ In this run, almost nothing remained.
 
 If you have watched a promising backtest collapse once execution entered the model, what did the damage: turnover, spread, fill probability, market impact, or something less obvious?
 
-Results file SHA-256: `fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9`
+Results file SHA-256: [`fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9`](https://github.com/icesurf666/quant-research-notes/blob/main/studies/round1-cross-sectional-reversal/evidence/results.json)
