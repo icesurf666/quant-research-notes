@@ -1,6 +1,6 @@
 {
   "version": "editorial_review_v2",
-  "article_sha256": "db46c1b2d6ce0903983c81063f7c3d20f739cfa7367117c41eb72a6fac8b11d1",
+  "article_sha256": "84caccdfc1df12bbaafa784a23dd636a23248f8f6e0a36fea8005908875be8ab",
   "results_sha256": "fd1f506549b8f43ea33029acb3da760dbc88478f12f0122cf980bc725e6e85a9",
   "passed": true,
   "passes": {
@@ -15,7 +15,7 @@
   "humanizer": {
     "version": "humanizer_2_11_2_adapted_v1",
     "score": 100,
-    "word_count": 1465,
+    "word_count": 1583,
     "findings": []
   },
   "source_verifier": {
