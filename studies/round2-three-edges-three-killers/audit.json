@@ -1,0 +1,20 @@
+{
+  "evidence_file": "evidence/source_report.md",
+  "files": [
+    "evidence/source_report.md",
+    "build_figures.py",
+    "figures/research_summary.png",
+    "figures/carry_lockbox.png",
+    "figures/momentum_sweep.png"
+  ],
+  "required_text": [
+    "In this development sample",
+    "consistent with a regime-dependent premium",
+    "did not estimate a formal beta decomposition"
+  ],
+  "banned_text": [
+    "untradeable at any reasonable execution frequency",
+    "market had already priced in its own friction",
+    "data artefact rather than a discovered pattern"
+  ]
+}
