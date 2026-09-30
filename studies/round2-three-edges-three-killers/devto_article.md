@@ -1,17 +1,17 @@
 ---
 title: Three Crypto Edges. Three Different Killers.
-description: I ran three well-known crypto trading strategies through the same honest framework: costs, a sealed holdout year, and a parameter robustness sweep. Each one failed for a completely different reason.
+description: Three crypto research candidates encountered different failure points: modelled costs, a reported holdout result, and parameter sensitivity.
 tags: algotrading, python, datascience, machinelearning
 cover_image: https://raw.githubusercontent.com/icesurf666/quant-research-notes/main/studies/round2-three-edges-three-killers/figures/research_summary.png
-canonical_url: https://pkazantsev.com/writing/three-edges-three-killers/
+canonical_url: https://www.pkazantsev.com/writing/three-edges-three-killers/
 ---
 
-A research platform should not make it easy to stop at a good-looking number. I built one that forces each hypothesis through three increasingly hostile tests: transaction costs, a sealed holdout year, and a parameter robustness sweep. Here is what went in and what came out.
+A research platform should not make it easy to stop at a good-looking number. My research process uses transaction-cost checks, held-out evaluation, and parameter sweeps. Not every candidate reaches every stage. These three failed at different points; here is what the reported results show and what they leave unresolved.
 
 | Edge | Peak result | Killer | Verdict |
 |---|---|---|---|
 | Price mean reversion | Gross Sharpe 7–13 | Transaction costs | REJECT |
-| Funding carry | +48.6% net, Sharpe 1.17 | One holdout year | REJECT |
+| Funding carry | +48.6% net, Sharpe 1.17 | Reported holdout result | REJECT |
 | Daily momentum | +97% net, best case | Robustness checks | WEAK |
 
 ## Edge 1: Mean reversion, killed by costs
@@ -24,20 +24,25 @@ Diagnosis: a strong pre-cost pattern without a robust net implementation under t
 
 These figures summarize the earlier research revisions in the source report. A [separate deep-dive](https://pkazantsev.com/writing/crypto-backtest-trading-costs/) examines a controlled evaluation; its metrics should not be mixed with this summary as if they came from one run.
 
-## Edge 2: Funding carry, killed by a sealed holdout
+## Edge 2: Funding carry, rejected after holdout evaluation
 
 Funding carry is structurally different from price reversion: long spot, short the perpetual, collect the funding rate. Lower turnover reduces the transaction-cost burden; it does not eliminate execution costs or other risks. On development data covering 4.5 years across 76 walk-forward windows, the result was +48.6% net, Sharpe 1.17, positive every single year including the 2022 bear market.
 
 Before treating that as a tradeable result, I ran two tests. A null decomposition shuffled which coin's funding the strategy received. The null still made +28%, suggesting that a substantial part of the development return did not depend on selecting the right coins. This was evidence of a shared funding premium in that sample, not proof of a durable selection edge.
 
-Then I opened the lockbox: the held-out period from September 2025 to September 2026, sealed before the project began and never examined. The frozen strategy ran unchanged on data not used to develop it.
+The original report describes a frozen strategy evaluated on a reserved interval from September 1, 2025 to September 1, 2026. It reports −0.5% net return and Sharpe −0.02. These are historical reported results, not a rerun performed for this article.
 
-![Development result vs lockbox out-of-sample result for funding carry](https://raw.githubusercontent.com/icesurf666/quant-research-notes/main/studies/round2-three-edges-three-killers/figures/carry_lockbox.png)
-*Development: +48.6% cumulative over 4.5 years (~9.2% CAGR), Sharpe 1.17. Lockbox: −0.5% over the held-out year, Sharpe −0.02. The chart compares annualized returns.*
+A later code audit found two qualifications. First, the current evaluator generates 17 complete 21-day trading windows, covering September 1, 2025 through August 24, 2026 (exclusive): 357 days, not the full reserved year. The original run's saved window list is not included in this evidence package, so this code inspection does not independently establish the exact coverage of that historical result.
 
-Diagnosis: the frozen strategy returned −0.5% net in the held-out year and did not confirm its development performance. This result alone does not distinguish a weaker market-wide funding premium from a failure of the coin-selection rule or the contribution of costs. Low turnover reduces trading costs; it does not rule them out as an explanation.
+Second, the evaluator selects eligible coins from the current data cache, including a funding-record-count filter applied before date restriction. Without the original frozen universe and a dated run manifest, I cannot rule out future data availability influencing that selection. The report calls the interval sealed; the public package does not independently demonstrate an untouched holdout.
 
-The −0.5% net holdout return supports the REJECT decision for this candidate; it does not prove that the market-wide funding premium disappeared. Distinguishing premium decay from selection failure requires a comparison that controls for exposure, turnover and execution costs. Any follow-up analysis of the opened holdout is exploratory, not a fresh out-of-sample confirmation.
+![Reported funding-carry Sharpe: development 1.17, holdout −0.02](https://raw.githubusercontent.com/icesurf666/quant-research-notes/main/studies/round2-three-edges-three-killers/figures/carry_reported_sharpe.png)
+
+*Reported Sharpe values, not a fresh reproduction. Development return was +48.6% over approximately 4.5 years; reported holdout return was −0.5%. No annualized-return comparison is plotted because exact historical coverage is not independently verified here.*
+
+Diagnosis: the reported holdout result did not reproduce development performance. It supports the research decision not to advance this candidate, not proof that the market-wide funding premium disappeared. Low turnover does not exclude costs as a contributor; the cause of that failure remains unresolved.
+
+Distinguishing premium decay from selection failure requires a comparison that controls for exposure, turnover and execution costs. Follow-up analysis of the opened interval is exploratory, not a fresh out-of-sample confirmation.
 
 ## Edge 3: Daily momentum, killed by robustness
 
@@ -53,22 +58,22 @@ The regime analysis completed the picture: about half the return came from the 2
 
 Diagnosis: a single parameter island without a supporting plateau, plus material regime dependence. The result was not robust enough to call neutral momentum alpha.
 
-## Three killers, three different causes
+## Three different failure points
 
-If all three edges had failed the same way, the lesson would be narrow. Mean reversion failed at the execution layer before reaching a holdout. Funding carry returned −0.5% net in its held-out year; the cause of that failure remains unresolved. Momentum failed on the question of whether the result was robust or merely the best-looking number in a sweep.
+If all three edges had failed the same way, the lesson would be narrow. Mean reversion failed at the execution layer before reaching a holdout. Funding carry reported −0.5% net in its holdout evaluation, with the provenance qualifications described above. Momentum failed on the question of whether the result was robust or merely the best-looking number in a sweep.
 
 Each guard catches a different class of failure. A research process that only runs one can miss weaknesses exposed by the others. Running all three identifies where a candidate fails; it does not always identify the economic cause.
 
-## No strategy. Three precise diagnoses.
+## No strategy ready to trade.
 
-No tradeable edge came out of this. What the framework produced was a bounded diagnosis for each hypothesis: one pre-cost pattern failed the tested execution assumptions, one carry result failed its sealed year, and one momentum result failed local robustness checks.
+No tradeable edge came out of this. What the framework produced was a bounded diagnosis for each hypothesis: one pre-cost pattern failed the tested execution assumptions, one carry candidate did not reproduce development performance in its reported holdout evaluation, and one momentum result failed local robustness checks.
 
 The next hypothesis goes into the same framework, not into a live account.
 
-This article summarizes development backtests, not live trading. The [frozen research report and figures](https://github.com/icesurf666/quant-research-notes/tree/main/studies/round2-three-edges-three-killers) document the reported results; the package is not a complete independent reproduction of the private data pipeline.
+This article summarizes development backtests, not live trading. The [frozen research report and figures](https://github.com/icesurf666/quant-research-notes/tree/main/studies/round2-three-edges-three-killers) document the reported results; the package is not a complete independent reproduction of the private data pipeline. Its SHA-256 checks establish file identity, not the correctness of the backtests. The original summary retains stronger causal claims that this article does not endorse. Machine-readable historical results, run configurations and a frozen universe are still needed for an independent numerical audit.
 
 Evidence source SHA-256: `cf9ce73542af24be3e5c2872864b2b41c6ce864e3b2f07b760e5434a1bdb23ba`
 
 ---
 
-*Research system: HFM · Walk-forward OOS · 76 windows · Bybit USDT perpetuals · Python*
+*Research system: HFM · Development walk-forward evaluation · Bybit spot and perpetuals · Python*

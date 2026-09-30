@@ -26,7 +26,7 @@ fig, ax = canvas("Three Crypto Edges. Three Different Killers.",
 ax.axis("off")
 rows = [
     ["Mean reversion", "Modelled execution costs", "REJECT"],
-    ["Funding carry", "Failed held-out year", "REJECT OOS"],
+    ["Funding carry", "Reported holdout result", "REJECT"],
     ["Daily momentum", "Parameter sensitivity", "WEAK"],
 ]
 table = ax.table(cellText=rows, colLabels=["Hypothesis", "Decisive failure", "Verdict"],
@@ -39,6 +39,25 @@ for (row, col), cell in table.get_celld().items():
     cell.set_facecolor("#e6e0d5" if row == 0 else "#fffdf8")
     cell.set_text_props(color=INK, weight="bold" if row == 0 or col == 2 else "normal")
 fig.savefig(ROOT / "figures/research_summary.png", facecolor=BG)
+plt.close(fig)
+
+# Reported metrics from the historical carry report, not a fresh backtest.
+fig, ax = canvas("Funding carry: reported development vs holdout",
+                 "Historical summary values · holdout provenance remains incompletely verified")
+fig.texts[-1].set_text("HFM · reported backtests · source: funding_carry_report.md, 2026-09-11")
+values = [1.17, -0.02]
+ax.bar([0, 1], values, color=["#2667a8", "#d65a31"], width=.48)
+ax.axhline(0, color=INK, linewidth=1)
+ax.set_xticks([0, 1], ["Development", "Reported holdout"], fontsize=16)
+ax.set_ylabel("Reported Sharpe", fontsize=14)
+ax.set_ylim(-.25, 1.5)
+ax.spines[["top", "right"]].set_visible(False)
+for x, value in enumerate(values):
+    ax.text(x, value + (.06 if value >= 0 else -.10), f"{value:.2f}",
+            ha="center", fontsize=24, weight="bold", color=INK)
+fig.text(.10, .105, "No causal attribution or statistical significance is implied by this comparison.",
+         fontsize=12, color=MUTED)
+fig.savefig(ROOT / "figures/carry_reported_sharpe.png", facecolor=BG)
 plt.close(fig)
 
 fig, ax = canvas("Momentum: a peak, not a parameter plateau",

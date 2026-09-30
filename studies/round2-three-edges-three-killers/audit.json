@@ -2,13 +2,16 @@
   "evidence_file": "evidence/source_report.md",
   "files": [
     "evidence/source_report.md",
+    "evidence/funding_carry_report.md",
     "build_figures.py",
     "figures/research_summary.png",
-    "figures/carry_lockbox.png",
+    "figures/carry_reported_sharpe.png",
     "figures/momentum_sweep.png"
   ],
   "required_text": [
     "In this development sample",
+    "357 days",
+    "cannot rule out future data availability",
     "the cause of that failure remains unresolved",
     "did not estimate a formal beta decomposition"
   ],
