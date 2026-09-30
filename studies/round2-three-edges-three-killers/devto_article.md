@@ -11,7 +11,7 @@ A research platform should not make it easy to stop at a good-looking number. I 
 | Edge | Peak result | Killer | Verdict |
 |---|---|---|---|
 | Price mean reversion | Gross Sharpe 7–13 | Transaction costs | REJECT |
-| Funding carry | +48.6% net, Sharpe 1.17 | Sealed holdout year | REJECT out-of-sample |
+| Funding carry | +48.6% net, Sharpe 1.17 | One holdout year | REJECT |
 | Daily momentum | +97% net, best case | Robustness checks | WEAK |
 
 ## Edge 1: Mean reversion, killed by costs
@@ -33,9 +33,11 @@ Before treating that as a tradeable result, I ran two tests. A null decompositio
 Then I opened the lockbox: the held-out period from September 2025 to September 2026, sealed before the project began and never examined. The frozen strategy ran unchanged on data not used to develop it.
 
 ![Development result vs lockbox out-of-sample result for funding carry](https://raw.githubusercontent.com/icesurf666/quant-research-notes/main/studies/round2-three-edges-three-killers/figures/carry_lockbox.png)
-*Development: +48.6% cumulative over 4.5 years (approximately +9.2% annualized), Sharpe 1.17. Lockbox: −0.5% over the held-out year, Sharpe −0.02. The chart compares annualized returns. The frozen strategy did not reproduce its development performance; this does not establish that the funding premium disappeared across the entire market.*
+*Development: +48.6% cumulative over 4.5 years (~9.2% CAGR), Sharpe 1.17. Lockbox: −0.5% over the held-out year, Sharpe −0.02. The chart compares annualized returns.*
 
-Diagnosis: the lockbox result is consistent with a regime-dependent premium. Walk-forward validation passed it; one genuinely unseen year did not. That is the lockbox working as designed, although one year cannot map every possible regime.
+Diagnosis: the frozen strategy returned −0.5% net in the held-out year and did not confirm its development performance. This result alone does not distinguish a weaker market-wide funding premium from a failure of the coin-selection rule or the contribution of costs. Low turnover reduces trading costs; it does not rule them out as an explanation.
+
+The −0.5% net holdout return supports the REJECT decision for this candidate; it does not prove that the market-wide funding premium disappeared. Distinguishing premium decay from selection failure requires a comparison that controls for exposure, turnover and execution costs. Any follow-up analysis of the opened holdout is exploratory, not a fresh out-of-sample confirmation.
 
 ## Edge 3: Daily momentum, killed by robustness
 
@@ -53,9 +55,9 @@ Diagnosis: a single parameter island without a supporting plateau, plus material
 
 ## Three killers, three different causes
 
-If all three edges had failed the same way, the lesson would be narrow. Mean reversion failed at the execution layer before reaching a holdout. Funding carry looked promising in development but failed to reproduce that performance on genuinely unseen data. Momentum failed on the question of whether the result was robust or merely the best-looking number in a sweep.
+If all three edges had failed the same way, the lesson would be narrow. Mean reversion failed at the execution layer before reaching a holdout. Funding carry returned −0.5% net in its held-out year; the cause of that failure remains unresolved. Momentum failed on the question of whether the result was robust or merely the best-looking number in a sweep.
 
-Each guard catches a different class of failure. A research process that only runs one of them will pass strategies that the others would have killed. Running all three means knowing specifically why each candidate fails, not just whether one survives.
+Each guard catches a different class of failure. A research process that only runs one can miss weaknesses exposed by the others. Running all three identifies where a candidate fails; it does not always identify the economic cause.
 
 ## No strategy. Three precise diagnoses.
 

@@ -1,9 +1,9 @@
 {
   "study": "round2-three-edges-three-killers",
   "sha256": {
-    "audit.json": "9e0d62ef1e950b9e47cd5ab7ae5dcd971d4487993e35f976dd9254d876bd4ab3",
+    "audit.json": "194c9b09f0de4d6678c8f31f9971a6d5c6feb6f871774ceb1e14a0f57e784f41",
     "build_figures.py": "1707edf559b3194163a8bd4b0c90e2f60afd44f552c9a7eec1ad06feeb9f141e",
-    "devto_article.md": "38c8ba29dda945f85e791f9c44344dbad96a0f33cb4c771f87d06f3fd2c7af7f",
+    "devto_article.md": "c50efb2271b1f6c86a46a3af36f4d398c5b9bf19d2ce5d8d7e664d8e9e9663cb",
     "evidence/source_report.md": "cf9ce73542af24be3e5c2872864b2b41c6ce864e3b2f07b760e5434a1bdb23ba",
     "figures/carry_lockbox.png": "c5e939c8d9ea20614f4671005bb12d6dc82a0bc4943820b5b94b2c93207b9fe0",
     "figures/momentum_sweep.png": "7f3aeaae9c55daef870b5e28cacc0df1a85d47ef19c26efdfec4b98070fb92c9",
