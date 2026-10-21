@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-labelledby="title desc">
+  <title id="title">One day explains the positive average return</title>
+  <desc id="desc">Three horizontal bars show mean net returns for all events, events without October 10 2025, and October 10 alone.</desc>
+  <rect width="900" height="500" fill="#090914"/>
+  <text x="54" y="56" fill="#f5f2ff" font-family="Georgia, serif" font-size="28">One day explains the positive mean</text>
+  <text x="54" y="84" fill="#9b93ae" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">mean net return per event · basis points</text>
+  <line x1="395" y1="120" x2="395" y2="430" stroke="#81798f" stroke-width="1.5"/>
+  <text x="395" y="110" text-anchor="middle" fill="#81798f" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">0</text>
+  <text x="54" y="172" fill="#d8d1e4" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16">All events</text>
+  <text x="54" y="194" fill="#81798f" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">N = 14,399</text>
+  <rect x="395" y="142" width="139" height="62" rx="5" fill="#a78bfa"/>
+  <text x="550" y="180" fill="#f5f2ff" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">+25.98 bps</text>
+  <text x="54" y="282" fill="#d8d1e4" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16">Without 2025-10-10</text>
+  <text x="54" y="304" fill="#81798f" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">N = 13,965</text>
+  <rect x="375" y="252" width="20" height="62" rx="5" fill="#fb7185"/>
+  <text x="412" y="290" fill="#f5f2ff" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">−3.69 bps</text>
+  <text x="54" y="392" fill="#d8d1e4" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16">2025-10-10 only</text>
+  <text x="54" y="414" fill="#81798f" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">N = 434</text>
+  <rect x="395" y="362" width="420" height="62" rx="5" fill="#f59e0b"/>
+  <text x="832" y="400" fill="#f5f2ff" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" text-anchor="end">+835 bps</text>
+  <text x="54" y="470" fill="#746d84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">Bars use different scale factors to keep the tail event legible; labels carry the values.</text>
+</svg>

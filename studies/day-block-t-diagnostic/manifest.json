@@ -1,0 +1,13 @@
+{
+  "study": "day-block-t-diagnostic",
+  "reproducibility_level": "frozen_evidence_logic_and_deterministic_tests",
+  "full_historical_reproduction": false,
+  "sha256": {
+    "README.md": "933fad023b42cd6c0d77ae1b823db696c958fe79408fd521cdc8fe5cd55495b8",
+    "article.md": "297b58430cbc5aa5dff829ec58dfacdbfbeb1cdf2eb64cca766f9c97c676d3b9",
+    "evidence/results.json": "72af9c4538fff7ff2e1c73eab5169a30f634412c9460cdea4a692e18818925fc",
+    "figures/return-concentration.svg": "e9c177d1623e16247ecc1f45076d72e3241242176da9123c16d29f4556246ca3",
+    "reproduction/day_block_t.py": "5d78d3d287e8971202ba70f1cebe501e80873e2d223995a75d3e6e12de5fccb1",
+    "reproduction/test_day_block_t.py": "d0e55af0e3efc9d470b41e6f47464165876376e57d27eb93f58eecfb3e060053"
+  }
+}

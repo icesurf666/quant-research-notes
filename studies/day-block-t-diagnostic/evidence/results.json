@@ -1,0 +1,44 @@
+{
+  "schema_version": "day_block_diagnostic_v1",
+  "status": "retrospective_development_diagnostic",
+  "article_url": "https://www.pkazantsev.com/writing/backtest-day-block-t/",
+  "private_source_report_sha256": "6a888c317c99da707f863e64d0ca94d305f938db03ac9523907eb6f224d56589",
+  "simulation": {
+    "market": "crypto perpetuals",
+    "symbols": 15,
+    "period": "2025-09 through 2026-09",
+    "event_count": 14399,
+    "trading_days": 365,
+    "return_unit": "basis_points"
+  },
+  "event_level": {
+    "mean_net_bps": 25.98,
+    "sample_sd_bps": 380.2,
+    "naive_t_stat": 8.2,
+    "median_net_bps": -16.2,
+    "win_rate": 0.34,
+    "assumption": "events are independent"
+  },
+  "day_block_diagnostic": {
+    "mean_daily_bps": -4.67,
+    "sample_sd_daily_bps": 53.75,
+    "t_stat": -1.66,
+    "two_sided_p_value_approx": 0.098,
+    "unit": "equal-weighted calendar-day means",
+    "assumption": "daily means are independent"
+  },
+  "october_10_2025_sensitivity": {
+    "event_count": 434,
+    "mean_net_bps": 835.0,
+    "event_level_mean_without_day_bps": -3.69,
+    "daily_mean_without_day_bps": -7.37,
+    "daily_t_stat_without_day": -9.42,
+    "interpretation": "post-hoc sensitivity analysis, not a confirmatory result"
+  },
+  "limitations": [
+    "The public package does not include the market-data cache or event-level return series.",
+    "The event-level t-statistic assumes independence and is reported as a naive comparison.",
+    "The day-block diagnostic does not automatically account for serial correlation across days.",
+    "Removing October 10 is not a valid way to obtain a clean p-value."
+  ]
+}
