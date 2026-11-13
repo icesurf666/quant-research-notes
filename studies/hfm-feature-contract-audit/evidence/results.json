@@ -1,0 +1,38 @@
+{
+  "study": "hfm-feature-contract-audit",
+  "reproducibility_level": "synthetic_feature_contract_fixture_and_frozen_audit_snapshot",
+  "full_october_2026_replay_reproduced": false,
+  "audit_period": "2026-10-06 through 2026-10-14",
+  "candidate_count": 15557,
+  "large_share_unit_mismatch": {
+    "historical_threshold_unit": "individual_trade_quantity",
+    "live_threshold_unit": "per_second_net_aggressive_volume",
+    "affected_symbol_ratio_range": [163, 423],
+    "trades_passing_live_cutoff_fraction_range": [0.00001, 0.00008],
+    "live_events_near_zero_fraction_lower_bound": 0.97,
+    "aaveusdt_example": {
+      "per_trade_quantity_p75": 4.3,
+      "per_second_nav_p75": 1730.0,
+      "ratio": 402.3255813953488
+    }
+  },
+  "other_confirmed_contract_mismatches": {
+    "run_frac": "buy-volume fraction instead of longest consecutive trade run divided by trade count",
+    "pre_vel": "unsigned volume instead of direction-adjusted signed flow",
+    "trailing_nav": "direction omitted"
+  },
+  "analytical_replay": {
+    "october_14": {
+      "broken_selected_candidates": 40,
+      "after_large_share_fix": 5,
+      "after_all_four_fixes": 2
+    },
+    "multi_day": {
+      "gross_mean_bps": -0.67,
+      "net_mean_bps_at_10_bps_round_trip_fee": -10.67,
+      "exact_reconstruction": false,
+      "reason": "October raw trades are unavailable for large_share and run_frac corrections"
+    }
+  },
+  "evidence_boundary": "The public fixture demonstrates the feature-contract mechanism. It does not reproduce the private market-data audit or establish deployable performance."
+}
