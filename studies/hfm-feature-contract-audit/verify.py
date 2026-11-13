@@ -26,8 +26,11 @@ def main() -> None:
     assert example["per_trade_quantity_p75"] == 4.3
     assert example["per_second_nav_p75"] == 1730.0
     assert example["ratio"] > 400.0
-    assert results["candidate_count"] == 15557
-    assert results["analytical_replay"]["multi_day"]["exact_reconstruction"] is False
+    assert results["candidate_count"] == 14682
+    raw_replay = results["raw_feature_reconstruction"]
+    assert raw_replay["raw_coverage"]["replayed"] == 14681
+    assert raw_replay["selected"]["count"] == 52
+    assert raw_replay["selected"]["net_mean_bps_at_10_bps_round_trip_fee"] < 0
 
     for relative_path, expected_hash in manifest["sha256"].items():
         actual_hash = sha256(STUDY / relative_path)

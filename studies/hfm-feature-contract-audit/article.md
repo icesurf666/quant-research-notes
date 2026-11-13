@@ -10,14 +10,20 @@ It made `large_share` close to zero for almost every live event.
 The problem did not stop at one feature. The historical and live paths also
 used different definitions of `run_frac`, `pre_vel`, and `trailing_nav`.
 
-The October correction is not presented as a performance result. Raw October
-trades were unavailable for two repaired features, so the 15,557-candidate
-replay was analytical rather than exact. Its estimated −0.67 bps gross and
-−10.67 bps after a 10 bps round-trip commission assumption are diagnostic
-numbers only.
+The raw Binance archive was later recovered for the recorded sessions. The
+four affected feature families were rebuilt at the original timestamps for
+14,681 of 14,682 candidates; one LDOUSDT detection second was absent from the
+archive. Matching frozen artifacts reproduced the recorded scores with a mean
+absolute difference of 1.04×10⁻⁶.
+
+The repaired features selected 52 candidates. Their raw five-second Binance
+markout averaged +8.67 bps and −1.33 bps after a 10 bps round-trip fee
+assumption. No strategy was promoted. This is not an execution test: it keeps
+candidate generation and the logged `nav_abs` / `nav_overshoot` convention
+fixed, and raw markout is not an executable fill.
 
 The public fixture tests the part that can be tested without market data:
 individual-trade and per-second-volume thresholds must never be substituted for
 each other.
 
-Frozen result snapshot SHA-256: `d4b236d0129313287c5312e1c10b7d8820f010ae2d654a3c1f9f9dab1e50cc3d`
+Frozen result snapshot SHA-256 is recorded in `manifest.json`.

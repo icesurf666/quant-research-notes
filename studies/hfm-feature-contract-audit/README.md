@@ -26,18 +26,22 @@ The audit also found contract mismatches in `run_frac`, `pre_vel`, and
 - the resulting `large_share` collapse;
 - the distinction between a feature-contract test and a market-performance
   claim;
+- a frozen summary of the later raw-trade reconstruction;
 - frozen audit metrics and artifact hashes.
 
 ## What it does not reproduce
 
-The full October 2026 market-data archive is not distributed. In particular,
-raw October trades were unavailable for two corrected features. This package
-does not reproduce the 15,557-candidate analytical replay and does not make a
-claim about deployable trading performance.
+The full October 2026 market-data archive is not distributed. This package does
+not rerun the raw reconstruction, nor does it distribute exchange data. It
+records the immutable aggregate result instead: four repaired feature families
+were rebuilt for 14,681 of 14,682 recorded candidates. The resulting 52
+selected candidates averaged +8.67 bps on a raw five-second Binance markout
+and −1.33 bps after a 10 bps round-trip fee assumption.
 
-The public snapshot records that the analytical replay estimated −0.67 bps
-gross and −10.67 bps after a 10 bps round-trip commission assumption. Those
-are audit diagnostics, not reproduced strategy results.
+That result is a feature-reconstruction check, not a claim about deployable
+trading performance. It retains the original candidate-generation path and the
+logged `nav_abs` / `nav_overshoot` convention; a raw Binance markout is not an
+executable fill.
 
 ## Verify
 

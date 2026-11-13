@@ -1,9 +1,9 @@
 {
   "study": "hfm-feature-contract-audit",
-  "reproducibility_level": "synthetic_feature_contract_fixture_and_frozen_audit_snapshot",
+  "reproducibility_level": "synthetic_feature_contract_fixture_and_frozen_raw_reconstruction_snapshot",
   "full_october_2026_replay_reproduced": false,
   "audit_period": "2026-10-06 through 2026-10-14",
-  "candidate_count": 15557,
+  "candidate_count": 14682,
   "large_share_unit_mismatch": {
     "historical_threshold_unit": "individual_trade_quantity",
     "live_threshold_unit": "per_second_net_aggressive_volume",
@@ -21,18 +21,36 @@
     "pre_vel": "unsigned volume instead of direction-adjusted signed flow",
     "trailing_nav": "direction omitted"
   },
-  "analytical_replay": {
+  "analytical_triage_before_raw_recovery": {
     "october_14": {
       "broken_selected_candidates": 40,
       "after_large_share_fix": 5,
       "after_all_four_fixes": 2
-    },
-    "multi_day": {
-      "gross_mean_bps": -0.67,
-      "net_mean_bps_at_10_bps_round_trip_fee": -10.67,
-      "exact_reconstruction": false,
-      "reason": "October raw trades are unavailable for large_share and run_frac corrections"
     }
   },
-  "evidence_boundary": "The public fixture demonstrates the feature-contract mechanism. It does not reproduce the private market-data audit or establish deployable performance."
+  "raw_feature_reconstruction": {
+    "source": "Binance Futures aggTrades daily archives",
+    "sessions": {
+      "v1_live_2026_10_06_through_2026_10_13_candidate_count": 13786,
+      "v2_full_baseline_2026_10_14_candidate_count": 895
+    },
+    "raw_coverage": {
+      "candidate_records": 14682,
+      "replayed": 14681,
+      "skipped": 1,
+      "skipped_reason": "LDOUSDT detection second absent from the archive"
+    },
+    "repaired_feature_families": ["large_share", "run_frac", "pre_vel", "trailing_nav"],
+    "score_integrity": {
+      "mean_absolute_frozen_vs_logged": 0.0000010359206126089768,
+      "maximum_absolute_frozen_vs_logged": 0.015208350513712388
+    },
+    "selected": {
+      "count": 52,
+      "raw_binance_gross_mean_bps": 8.669261622552206,
+      "net_mean_bps_at_10_bps_round_trip_fee": -1.3307383774477937,
+      "win_rate_over_10_bps": 0.40384615384615385
+    }
+  },
+  "evidence_boundary": "The public fixture demonstrates the feature-contract mechanism. The frozen raw-reconstruction summary is not independently reproducible without the exchange archive and private recorded candidate log. It retains candidate generation and the logged nav_abs/nav_overshoot convention. A raw Binance markout is not an executable fill and does not establish deployable performance."
 }

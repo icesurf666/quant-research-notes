@@ -1,14 +1,14 @@
 {
   "study": "hfm-feature-contract-audit",
-  "reproducibility_level": "synthetic_feature_contract_fixture_and_frozen_audit_snapshot",
+  "reproducibility_level": "synthetic_feature_contract_fixture_and_frozen_raw_reconstruction_snapshot",
   "full_october_2026_replay_reproduced": false,
   "sha256": {
-    "README.md": "d56f8858dcd807261536dac05736f53fd51300c392000436018965ccaafcff20",
-    "article.md": "38ac22048f4709dc5d0b52c95e6ebb781a6e1cff38760973dbb37badbda63f20",
-    "evidence/results.json": "d4b236d0129313287c5312e1c10b7d8820f010ae2d654a3c1f9f9dab1e50cc3d",
+    "README.md": "31a149eecdb0b1619717308514683e3b26b9bdfa5cd9c8f46197b509cf8363b0",
+    "article.md": "b4afd9bf180b3f2d878a1da69135a6b2657324d1d961a7eb4ca3b6b83fdf30a8",
+    "evidence/results.json": "b2d3368ab7264f51b655c8af841a428a05a55e12b236d63756c6760f8e4c921c",
     "reproduction/feature_contract.py": "65eb06c3113e2bf4fbb15a09dcf0ef9f5c3447c3b1e13d7c21c17cc033579eab",
     "reproduction/test_feature_contract.py": "dd24ee6dc0f129dd5954546a75c2314a432b7cbd4baba5e1b85a2fac2d2fd3cb",
-    "verify.py": "ef4f8b9cd84805e2747e47ecfe95ee99fb948010f875815e5effd405e7afa266",
+    "verify.py": "fdf81b2c53a87b5d379bee3a8b96cf8390c13e1dfd1f8e1cb227b9ef332e18a9",
     "hn_post.md": "a42362c44028e45f175419ea7c7377ee3cd532fa2f68a5c5ff5167e4c76e727b"
   }
 }
